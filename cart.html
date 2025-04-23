@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DenniLicious Coffee - Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <div class="footer-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">DenniLicious</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
+                        <li class="nav-item active"><a class="nav-link active" href="cart.html">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="accounts.html">My Account</a></li>
+                        <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container my-5">
+            <h2>Your Cart</h2>
+            <table class="table" id="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Cart items will be dynamically inserted here -->
+                </tbody>
+            </table>
+            <h3 id="total-price">Total: $0.00</h3>
+            <button class="btn btn-danger" id="clear-cart-button">Clear Cart</button>
+            <button class="btn btn-primary" id="checkout-button">Proceed to Checkout</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white py-4">
+            <div class="container text-center">
+                <p>&copy; 2025 DenniLicious. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const cartChannel = new BroadcastChannel('cart-updates');
+
+        // Load cart from localStorage
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartTable = document.getElementById('cart-table').getElementsByTagName('tbody')[0];
+            let total = 0;
+
+            cartTable.innerHTML = ''; // Clear previous content
+
+            cart.forEach((item, index) => {
+                const itemTotal = (item.price * item.quantity).toFixed(2);
+                total += parseFloat(itemTotal);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary decrease-btn" data-index="${index}">-</button>
+                        ${item.quantity}
+                        <button class="btn btn-sm btn-secondary increase-btn" data-index="${index}">+</button>
+                    </td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>$${itemTotal}</td>
+                    <td>
+                        <span class="cart-button remove-item" data-index="${index}">Remove</span>
+                    </td>
+                `;
+                cartTable.appendChild(row);
+            });
+
+            // Update the total price
+            document.getElementById('total-price').innerText = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Update the cart in localStorage
+        function updateCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+            cartChannel.postMessage({ type: 'cartUpdated' });
+        }
+
+        // Increase item quantity
+        function increaseQuantity(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].quantity += 1;
+            updateCart(cart);
+        }
+
+        // Decrease item quantity
+        function decreaseQuantity(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart[index].quantity > 1) {
+                cart[index].quantity -= 1;
+                updateCart(cart);
+            }
+        }
+
+        // Remove item from cart
+        function removeItem(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            updateCart(cart);
+        }
+
+        // Clear the entire cart
+        function clearCart() {
+            localStorage.removeItem('cart');
+            loadCart();
+        }
+
+        // Checkout action
+        function checkout() {
+            const loggedIn = localStorage.getItem('username');
+            if (!loggedIn) {
+                alert('Please log in to proceed to checkout.');
+                window.location.href = 'account.html';
+            } else {
+                // Get the current cart data from localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                // Store the cart data for the checkout page
+                localStorage.setItem('checkoutCart', JSON.stringify(cart));
+
+                // Redirect the user to the checkout page
+                window.location.href = 'checkout.html';
+            }
+        }
+
+        // Event listeners for actions
+        document.getElementById('checkout-button').addEventListener('click', checkout);
+        document.getElementById('clear-cart-button').addEventListener('click', clearCart);
+
+        // Listen for cart update messages
+        cartChannel.onmessage = function(event) {
+            if (event.data && event.data.type === 'cartUpdated') {
+                loadCart(); // Reload the cart display
+            }
+        };
+
+        // Event listeners for quantity change and item removal
+        document.getElementById('cart-table').addEventListener('click', function(event) {
+            const target = event.target;
+            const index = target.getAttribute('data-index');
+
+            if (target.classList.contains('increase-btn')) {
+                increaseQuantity(index);
+            } else if (target.classList.contains('decrease-btn')) {
+                decreaseQuantity(index);
+            } else if (target.classList.contains('remove-item')) {
+                removeItem(index);
+            }
+        });
+
+        // Load cart on page load
+        window.onload = loadCart;
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

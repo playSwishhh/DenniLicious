@@ -1,0 +1,36 @@
+.navbar{
+	padding:  1.5rem 0 !important;
+}
+.navbar-brand{
+	font-weight:  bold !important;
+	font-size: 2rem !important;
+}
+.navbar-nav	.nav-link{
+	font-size: 1.2rem !important;
+	padding: 0.5rem 1rem !important;
+}
+.navbar-toggler{
+	font-size: 1.5rem !important;
+}
+.navbar-dark	.navbar-nav	.nav-link{
+	color: #ffffff !important;
+}
+.navbar-dark	.navbar-nav	.nav-link:hover{
+	color: #007bff !important;
+}
+.nav-link.active{
+	color:  #007bff !important;
+	font-weight: bold;
+	border-bottom: 2px solid  #007bff;
+}
+.hero-image{
+	height: 300px;
+	background-image: url('images/Coffee BG.jpg') ;
+	background-size: cover;
+	background-position: center;
+	border-radius: 10px;
+	margin-top: 30px;
+}
+h2{
+	text-align: center;
+}

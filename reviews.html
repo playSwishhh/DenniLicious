@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews - DenniLicious Coffee Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    /* Navbar Styles */
+    .navbar {
+      padding: 1.5rem 0 !important;
+    }
+
+    .navbar-brand {
+      font-weight: bold !important;
+      font-size: 2rem !important;
+    }
+
+    .navbar-nav .nav-link {
+      font-size: 1.2rem !important;
+      padding: 0.5rem 1rem !important;
+    }
+
+    .navbar-toggler {
+      font-size: 1.5rem !important;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: #ffffff !important;
+    }
+
+    .navbar-dark .navbar-nav .nav-link:hover {
+      color: #007bff !important;
+    }
+
+    .nav-link.active {
+      color: #007bff !important; /* Active link color */
+      font-weight: bold; /* Bold font for active link */
+      border-bottom: 2px solid #007bff; /* Optional underline for active link */
+    }
+
+    /* Full height body and footer sticky styles */
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* This container wraps the main content */
+    .content-wrapper {
+      flex: 1; /* Takes up the remaining space */
+      padding-bottom: 20px; /* Give a little space to prevent the footer overlap */
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    /* Ensure the container is always filling the height and footer is at the bottom */
+    .container {
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">DenniLicious</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
+          <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+          <li class="nav-item"><a class="nav-link" href="accounts.html">My Account</a></li>
+          <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link active" href="reviews.html">Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Wrapper for Sticky Footer -->
+  <div class="container content-wrapper">
+    <!-- Reviews Page -->
+    <div class="my-5">
+      <h2>Customer Reviews</h2>
+      <form id="reviewForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" class="form-control" id="name" required />
+        </div>
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating</label>
+          <select class="form-select" id="rating">
+            <option value="1">★☆☆☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="4">★★★★☆</option>
+            <option value="5">★★★★★</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="comment" class="form-label">Review</label>
+          <textarea class="form-control" id="comment" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </form>
+
+      <button id="clearReviews" class="btn btn-danger mt-3">Clear Reviews</button>
+
+      <div id="reviewList" class="mt-4"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 DenniLicious. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+  // Load existing reviews from localStorage when the page loads
+  window.onload = function() {
+    const savedReviews = JSON.parse(localStorage.getItem("reviews"));
+    if (savedReviews) {
+      savedReviews.forEach(review => {
+        displayReview(review.name, review.rating, review.comment);
+      });
+    }
+  };
+
+  // Function to display a review
+  function displayReview(name, rating, comment) {
+    const reviewHTML = `<div class="card mb-2">
+                          <div class="card-body">
+                            <h5>${name}</h5>
+                            <p>${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</p>
+                            <p>${comment}</p>
+                          </div>
+                        </div>`;
+    document.getElementById("reviewList").innerHTML += reviewHTML;
+  }
+
+  // Event listener for the review form
+  document.getElementById("reviewForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const rating = document.getElementById("rating").value;
+    const comment = document.getElementById("comment").value;
+
+    // Store the review in localStorage
+    const newReview = { name, rating, comment };
+    const savedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+    savedReviews.push(newReview);
+    localStorage.setItem("reviews", JSON.stringify(savedReviews));
+
+    // Display the new review
+    displayReview(name, rating, comment);
+
+    // Reset the form
+    this.reset();
+  });
+
+  // Event listener for clearing reviews
+  document.getElementById("clearReviews").addEventListener("click", function() {
+    localStorage.removeItem("reviews"); // Clear reviews from localStorage
+    document.getElementById("reviewList").innerHTML = ""; // Clear reviews from the page
+  });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
