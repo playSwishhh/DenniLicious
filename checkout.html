@@ -79,7 +79,7 @@
                     const li = document.createElement('li');
                     const itemTotal = (item.price * item.quantity).toFixed(2);
                     total += parseFloat(itemTotal);
-                    li.textContent = `${item.name} (${item.quantity} x $${item.price.toFixed(2)}) = $${itemTotal}`;
+                    li.textContent = `Php{item.name} (Php{item.quantity} x Php{item.price.toFixed(2)}) = Php{itemTotal}`;
                     ul.appendChild(li);
                 });
                 checkoutItemsDiv.appendChild(ul);
@@ -100,9 +100,9 @@
                 localStorage.setItem('pendingShippingInfo', JSON.stringify({ address: shippingAddress, phone: shippingPhone }));
                 window.location.href = 'accounts.html?redirect=checkout';
             } else {
-                const orderHistoryKey = `orderHistory_${username}`;
+                const orderHistoryKey = `orderHistory_Php{username}`;
                 const orderHistory = JSON.parse(localStorage.getItem(orderHistoryKey)) || [];
-                const total = parseFloat(document.getElementById('checkout-total').innerText.replace('Total: $', ''));
+                const total = parseFloat(document.getElementById('checkout-total').innerText.replace('Total: Php', ''));
                 const newOrder = {
                     orderId: Date.now(),
                     date: new Date().toISOString(),
