@@ -132,9 +132,9 @@
 
         orderHistory.forEach(order => {
             const listItem = document.createElement('li');
-            let orderDetails = `Order #${order.orderId} - $${order.totalAmount}<br>`;
+            let orderDetails = `Order #${order.orderId} - ₱${order.totalAmount}<br>`;
             order.items.forEach(item => {
-                orderDetails += `${item.quantity} x ${item.name} - $${item.price * item.quantity}<br>`;
+                orderDetails += `${item.quantity} x ${item.name} - ₱${item.price * item.quantity}<br>`;
             });
             orderDetails += `Date: ${new Date(order.date).toLocaleDateString()} ${new Date(order.date).toLocaleTimeString()}<br><br>`;
 
