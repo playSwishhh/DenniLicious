@@ -33,7 +33,7 @@
         <div class="container my-5">
             <h2>Checkout</h2>
             <div id="checkout-items"></div>
-            <h4 id="checkout-total">Total: Php0.00</h4>
+            <h4 id="checkout-total">Total: $0.00</h4>
 
             <!-- Shipping Information Form -->
             <h4>Shipping Information</h4>
@@ -79,14 +79,14 @@
                     const li = document.createElement('li');
                     const itemTotal = (item.price * item.quantity).toFixed(2);
                     total += parseFloat(itemTotal);
-                    li.textContent = `Php{item.name} (Php{item.quantity} x Php{item.price.toFixed(2)}) = Php{itemTotal}`;
+                    li.textContent = `${item.name} (${item.quantity} x ₱${item.price.toFixed(2)}) = ₱${itemTotal}`;
                     ul.appendChild(li);
                 });
                 checkoutItemsDiv.appendChild(ul);
-                checkoutTotalElement.textContent = `Total: Php{total.toFixed(2)}`;
+                checkoutTotalElement.textContent = `Total: ₱${total.toFixed(2)}`;
             } else {
                 checkoutItemsDiv.textContent = 'Your cart is empty.';
-                checkoutTotalElement.textContent = 'Total: Php0.00';
+                checkoutTotalElement.textContent = 'Total: ₱0.00';
             }
         }
 
@@ -100,9 +100,9 @@
                 localStorage.setItem('pendingShippingInfo', JSON.stringify({ address: shippingAddress, phone: shippingPhone }));
                 window.location.href = 'accounts.html?redirect=checkout';
             } else {
-                const orderHistoryKey = `orderHistory_Php{username}`;
+                const orderHistoryKey = `orderHistory_${username}`;
                 const orderHistory = JSON.parse(localStorage.getItem(orderHistoryKey)) || [];
-                const total = parseFloat(document.getElementById('checkout-total').innerText.replace('Total: Php', ''));
+                const total = parseFloat(document.getElementById('checkout-total').innerText.replace('Total: ₱', ''));
                 const newOrder = {
                     orderId: Date.now(),
                     date: new Date().toISOString(),
