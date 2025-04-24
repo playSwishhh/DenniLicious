@@ -75,16 +75,16 @@
                 total += parseFloat(itemTotal);
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.name}</td>
+                    <td>Php{item.name}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary decrease-btn" data-index="${index}">-</button>
-                        ${item.quantity}
-                        <button class="btn btn-sm btn-secondary increase-btn" data-index="${index}">+</button>
+                        <button class="btn btn-sm btn-secondary decrease-btn" data-index="Php{index}">-</button>
+                        Php{item.quantity}
+                        <button class="btn btn-sm btn-secondary increase-btn" data-index="Php{index}">+</button>
                     </td>
-                    <td>$${item.price.toFixed(2)}</td>
-                    <td>$${itemTotal}</td>
+                    <td>Php{item.price.toFixed(2)}</td>
+                    <td>Php{itemTotal}</td>
                     <td>
-                        <span class="cart-button remove-item" data-index="${index}">Remove</span>
+                        <span class="cart-button remove-item" data-index="Php{index}">Remove</span>
                     </td>
                 `;
                 cartTable.appendChild(row);
