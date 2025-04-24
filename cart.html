@@ -46,7 +46,7 @@
                     <!-- Cart items will be dynamically inserted here -->
                 </tbody>
             </table>
-            <h3 id="total-price">Total: Php0.00</h3>
+            <h3 id="total-price">Total: ₱0.00</h3>
             <button class="btn btn-danger" id="clear-cart-button">Clear Cart</button>
             <button class="btn btn-primary" id="checkout-button">Proceed to Checkout</button>
         </div>
@@ -75,23 +75,23 @@
                 total += parseFloat(itemTotal);
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>Php{item.name}</td>
+                    <td>${item.name}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary decrease-btn" data-index="Php{index}">-</button>
-                        Php{item.quantity}
-                        <button class="btn btn-sm btn-secondary increase-btn" data-index="Php{index}">+</button>
+                        <button class="btn btn-sm btn-secondary decrease-btn" data-index="${index}">-</button>
+                        ${item.quantity}
+                        <button class="btn btn-sm btn-secondary increase-btn" data-index="${index}">+</button>
                     </td>
-                    <td>Php{item.price.toFixed(2)}</td>
-                    <td>Php{itemTotal}</td>
+                    <td>₱${item.price.toFixed(2)}</td>
+                    <td>₱${itemTotal}</td>
                     <td>
-                        <span class="cart-button remove-item" data-index="Php{index}">Remove</span>
+                        <span class="cart-button remove-item" data-index="${index}">Remove</span>
                     </td>
                 `;
                 cartTable.appendChild(row);
             });
 
             // Update the total price
-            document.getElementById('total-price').innerText = `Total: Php{total.toFixed(2)}`;
+            document.getElementById('total-price').innerText = `Total: ₱${total.toFixed(2)}`;
         }
 
         // Update the cart in localStorage
