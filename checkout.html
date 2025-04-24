@@ -33,7 +33,7 @@
         <div class="container my-5">
             <h2>Checkout</h2>
             <div id="checkout-items"></div>
-            <h4 id="checkout-total">Total: $0.00</h4>
+            <h4 id="checkout-total">Total: Php0.00</h4>
 
             <!-- Shipping Information Form -->
             <h4>Shipping Information</h4>
@@ -83,10 +83,10 @@
                     ul.appendChild(li);
                 });
                 checkoutItemsDiv.appendChild(ul);
-                checkoutTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+                checkoutTotalElement.textContent = `Total: Php{total.toFixed(2)}`;
             } else {
                 checkoutItemsDiv.textContent = 'Your cart is empty.';
-                checkoutTotalElement.textContent = 'Total: $0.00';
+                checkoutTotalElement.textContent = 'Total: Php0.00';
             }
         }
 
@@ -98,7 +98,7 @@
             if (!username) {
                 localStorage.setItem('pendingCheckoutCart', JSON.stringify(currentCheckoutCart));
                 localStorage.setItem('pendingShippingInfo', JSON.stringify({ address: shippingAddress, phone: shippingPhone }));
-                window.location.href = 'account.html?redirect=checkout';
+                window.location.href = 'accounts.html?redirect=checkout';
             } else {
                 const orderHistoryKey = `orderHistory_${username}`;
                 const orderHistory = JSON.parse(localStorage.getItem(orderHistoryKey)) || [];
@@ -118,7 +118,7 @@
                 localStorage.removeItem('pendingShippingInfo');
 
                 alert('Your order has been placed!');
-                window.location.href = 'account.html';
+                window.location.href = 'accounts.html';
             }
         }
 
