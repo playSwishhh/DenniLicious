@@ -46,7 +46,7 @@
                     <!-- Cart items will be dynamically inserted here -->
                 </tbody>
             </table>
-            <h3 id="total-price">Total: $0.00</h3>
+            <h3 id="total-price">Total: Php0.00</h3>
             <button class="btn btn-danger" id="clear-cart-button">Clear Cart</button>
             <button class="btn btn-primary" id="checkout-button">Proceed to Checkout</button>
         </div>
@@ -91,7 +91,7 @@
             });
 
             // Update the total price
-            document.getElementById('total-price').innerText = `Total: $${total.toFixed(2)}`;
+            document.getElementById('total-price').innerText = `Total: Php{total.toFixed(2)}`;
         }
 
         // Update the cart in localStorage
@@ -135,7 +135,7 @@
             const loggedIn = localStorage.getItem('username');
             if (!loggedIn) {
                 alert('Please log in to proceed to checkout.');
-                window.location.href = 'account.html';
+                window.location.href = 'accounts.html';
             } else {
                 // Get the current cart data from localStorage
                 const cart = JSON.parse(localStorage.getItem('cart')) || [];
