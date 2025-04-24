@@ -125,22 +125,22 @@
             function displayOrderHistory() {
     const username = localStorage.getItem('username');
     if (username) {
-        const orderHistoryKey = orderHistory_${username};
+        const orderHistoryKey = `orderHistory_${username}`;
         const orderHistory = JSON.parse(localStorage.getItem(orderHistoryKey)) || [];
         orderHistoryList.innerHTML = '';
 
         orderHistory.forEach(order => {
             const listItem = document.createElement('li');
-            let orderDetails = Order #${order.orderId} - $${order.totalAmount}<br>;
+            let orderDetails = `Order #${order.orderId} - $${order.totalAmount}<br>`;
             order.items.forEach(item => {
-                orderDetails += ${item.quantity} x ${item.name} - $${item.price * item.quantity}<br>;
+                orderDetails += `${item.quantity} x ${item.name} - $${item.price * item.quantity}<br>`;
             });
-            orderDetails += Date: ${new Date(order.date).toLocaleDateString()} ${new Date(order.date).toLocaleTimeString()}<br><br>;
+            orderDetails += `Date: ${new Date(order.date).toLocaleDateString()} ${new Date(order.date).toLocaleTimeString()}<br><br>`;
 
             // Include Shipping Info in the Order Details
             if (order.shippingInfo) {
-                orderDetails += Shipping Address: ${order.shippingInfo.address}<br>;
-                orderDetails += Phone: ${order.shippingInfo.phone}<br>;
+                orderDetails += `Shipping Address: ${order.shippingInfo.address}<br>`;
+                orderDetails += `Phone: ${order.shippingInfo.phone}<br>`;
             }
 
             listItem.innerHTML = orderDetails;
